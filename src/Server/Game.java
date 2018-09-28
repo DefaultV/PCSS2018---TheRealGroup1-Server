@@ -15,6 +15,7 @@ public class Game {
 	Emojis whisper;
 	
 	List<Player> playerList;
+  boolean playing;
 	
 	public String GetRules() {
 		return "Something";
@@ -23,4 +24,8 @@ public class Game {
 	public List<Player> GetPlayers() {
 		return playerList;
 	}
+
+  public isPlaying(){
+    return playing;
+  }
 }
