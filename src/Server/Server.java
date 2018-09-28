@@ -2,6 +2,8 @@ package Server;
 import java.net.*;
 import java.io.*;
 import java.util.*;
+import Client.Player;
+
 
 public class Server {
 
@@ -41,9 +43,4 @@ public class Server {
 
 	void ExitLobby() {
 	}
-
-}
-
-class Player {
-
 }
