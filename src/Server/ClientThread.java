@@ -8,7 +8,7 @@ public class ClientThread{
     this.threadName = name;
   }
 
-  void CommandHandler(){
+  void CommandHandler(String cmd){
 
   }
 
