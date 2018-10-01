@@ -25,7 +25,7 @@ public class Game {
 		return playerList;
 	}
 
-  public isPlaying(){
+  public boolean isPlaying(){
     return playing;
   }
 }
