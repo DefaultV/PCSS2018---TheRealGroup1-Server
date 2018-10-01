@@ -13,7 +13,7 @@ public class Server {
 
 	public static void main(String[] args) throws IOException {
 		//Specifying the serverSocket port number
-		int port = 6660;
+		int port = 6690;
 
 		//Creating the serversocket
 			ServerSocket ourServerSocket = new ServerSocket(port);
@@ -36,9 +36,11 @@ public class Server {
 	}
 
 	void CreateLobby() {
+		
 	}
 
-	void SetLobby() {
+	void SetLobby(Player player) {
+		
 	}
 
 	void ExitLobby() {
