@@ -1,6 +1,5 @@
 package Server;
 import java.util.List;
-
 import Client.Player;
 
 enum Emojis {
@@ -15,7 +14,7 @@ public class Game {
 	Emojis whisper;
 	
 	List<Player> playerList;
-  boolean playing;
+	boolean playing;
 	
 	public String GetRules() {
 		return "Something";
@@ -25,7 +24,7 @@ public class Game {
 		return playerList;
 	}
 
-  public isPlaying(){
-    return playing;
-  }
+	public boolean isPlaying(){
+		return playing;
+	}
 }
