@@ -21,16 +21,6 @@ public class Server {
 		
 		//System.out.println("Please Write /Create Server + Your_ServerName");
 		
-		
-		
-		//if (input.nextLine("Create Server "))
-		//{
-			//System.out.println("You wrote the write thing");
-		//}
-		//double radius = input.nextDouble();
-
-		//System.out.println(2 * radius);
-
 
 	// Accepts the request that the client class is sending
 	String clientSentence;
