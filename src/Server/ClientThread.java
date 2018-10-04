@@ -5,8 +5,8 @@ import Client.Player;
 
 public class ClientThread{
   
-	String threadName;
-	Player player;
+	private String threadName;
+	private Player player;
 
 	public ClientThread(String name, Player player){
 		this.threadName = name;
@@ -18,7 +18,7 @@ public class ClientThread{
 		String[] cmdWord;
 		int diceTotal;
 	  
-		cmd.toLowerCase();
+		cmd = cmd.toLowerCase();
 		cmdWord = cmd.split(" ", 2);
 	  
 		switch (cmdWord[0]) {
