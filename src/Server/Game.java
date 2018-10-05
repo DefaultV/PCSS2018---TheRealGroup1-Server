@@ -31,6 +31,9 @@ public class Game {
 		return playerList;
 	}
 
+  public void SetPlaying(boolean status){
+    this.playing = status;
+  }
 	public boolean isPlaying(){
 		return playing;
 	}
