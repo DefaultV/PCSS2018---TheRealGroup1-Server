@@ -30,9 +30,8 @@ public class Server {
 	DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
 	clientSentence = in.readUTF();
 	out.writeUTF("Welcome " + clientSentence + "!");
-	double annualIR = in.readDouble();
-	int numberOfYears = in.readInt();
-	double loanAmount = in.readDouble();
+	double doubles = in.readDouble();
+	int integers = in.readInt();
 
 	
 	
