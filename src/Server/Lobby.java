@@ -35,7 +35,7 @@ public class Lobby{
   }
 
   public int GetPlayerCount(){
-    return this.client_List.size()
+    return this.client_List.size();
   }
 
   public void InitGame(){
