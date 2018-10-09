@@ -2,16 +2,14 @@ package Server;
 import java.util.*;
 import Client.Client;
 
-import Client.Client;
-
 public class Lobby{
   private String id;
   private String name;
 
-  List<Client> client_List;
+  List<ClientThread> client_List;
 
   public Lobby(String id, String name){
-    this.client_List = new ArrayList<Client>();
+    this.client_List = new ArrayList<ClientThread>();
     this.id = id;
     this.name = name;
   }
@@ -24,10 +22,10 @@ public class Lobby{
     return this.name;
   }
 
-  public void AddPlayerToList(Client client){
+  public void AddPlayerToList(ClientThread client){
     this.client_List.add(client);
   }
-  public void RemovePlayerFromList(Client client){
+  public void RemovePlayerFromList(ClientThread client){
     this.client_List.remove(client);
     if (this.GetPlayerCount() <= 0){
       //Call server & delete this lobby TODO
