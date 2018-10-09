@@ -10,6 +10,8 @@ public class Server {
   DataInputStream iStream;
   DataOutputStream oStream;
   List<Player> client_ids;
+  List<Lobby> lobby_list;
+
   static int numberOfClient = 0;
 
   public static void main(String[] args) throws IOException {
@@ -39,6 +41,30 @@ public class Server {
         System.err.println(ex);
       }
     }).start();
+  }
+
+  void ClientHandler() {
+  }
+
+  public void CreateLobby(ClientThread client, String name) {
+    int rnd_id = (int)Math.ceil(Math.random() * 100);
+    Lobby lob = new Lobby(Integer.toString(rnd_id), name);
+    lob.AddPlayerToList(client);
+  }
+
+  public void SetLobby(ClientThread client, String lobbyname) {
+    GetLobbyByName(lobbyname).AddPlayerToList(client);
+  }
+
+  public Lobby GetLobbyByName(String lobbyname){
+    for(Lobby lob : lobby_list){
+      if (lob.GetLobbyName().equals(lobbyname))
+        return lob;
+    }
+    return null;
+  }
+
+  void ExitLobby() {
   }
 }
 
@@ -85,27 +111,4 @@ class HandleAClient implements Runnable {
   // Accepts the request that the client class is sending
 
   // System.out.println("Please Write /Create Server + Your_ServerName");
-  void ClientHandler() {
-  }
-
-  void CreateLobby(ClientThread client, String name) {
-    int rnd_id = (int)Math.ceil(Math.random() * 100);
-    Lobby lob = new Lobby(Integer.toString(rnd_id), name);
-    lob.AddPlayerToList(client);
-  }
-
-  void SetLobby(ClientThread client, String lobbyname) {
-    GetLobbyByName(lobbyname).AddPlayerToList(client);
-  }
-
-  Lobby GetLobbyByName(String lobbyname){
-    for(Lobby lob : lobby_list){
-      if (lob.GetLobbyName().equals(lobbyname))
-        return lob;
-    }
-    return null;
-  }
-
-  void ExitLobby() {
-  }
 }
