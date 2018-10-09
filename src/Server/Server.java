@@ -10,6 +10,7 @@ public class Server {
   DataInputStream iStream;
   DataOutputStream oStream;
   List<Player> client_ids;
+  List<Lobby> lobby_list;
 
   public static void main(String[] args) throws IOException {
     //Specifying the serverSocket port number
@@ -41,13 +42,23 @@ public class Server {
 
   void ClientHandler() {
   }
-
-  void CreateLobby() {
-
+  
+  void CreateLobby(ClientThread client, String name) {
+    int rnd_id = (int)Math.ceil(Math.random() * 100);
+    Lobby lob = new Lobby(Integer.toString(rnd_id), name);
+    lob.AddPlayerToList(client);
   }
 
-  void SetLobby(Player player) {
+  void SetLobby(ClientThread client, String lobbyname) {
+    GetLobbyByName(lobbyname).AddPlayerToList(client);
+  }
 
+  Lobby GetLobbyByName(String lobbyname){
+    for(Lobby lob : lobby_list){
+      if (lob.GetLobbyName().equals(lobbyname))
+        return lob;
+    }
+    return null;
   }
 
   void ExitLobby() {

@@ -20,14 +20,14 @@ public class Game {
 	Emojis shouting;
 	Emojis whisper;
 	
-	List<Player> playerList;
+	List<ClientThread> playerList;
 	boolean playing;
 	
 	public String GetRules() {
 		return "Something";
 	}
 	
-	public List<Player> GetPlayers() {
+	public List<ClientThread> GetPlayers() {
 		return playerList;
 	}
 
@@ -38,8 +38,8 @@ public class Game {
 		return playing;
 	}
 
-  public void Broadcast(List<Player> l_ply, String txt){
-    for(Player ply : l_ply){
+  public void Broadcast(List<ClientThread> l_ply, String txt){
+    for(ClientThread ply : l_ply){
       System.out.format("%s", txt);
       //TODO
       //Send text to player
@@ -47,7 +47,7 @@ public class Game {
     }
   }
 
-  public void SetPosition(Player ply, int[] pos){
+  public void SetPosition(ClientThread ply, int[] pos){
     this.playerList.get(playerList.indexOf(ply)).SetLocation(pos);
     //Update position on map and give info to clients
     //TODO
@@ -65,6 +65,8 @@ public class Game {
       case LEAVING:
         form += String.format("%s is leaving...", ply.GetNickName());
         break;
+      default:
+        break;
     }
     Broadcast(playerList, form);
     //Update action on map and give info to clients
@@ -73,11 +75,11 @@ public class Game {
 
   public void SetSaying(Player ply, String text){
     //if range between p1 and p2 <= 5
-    for (Player oply : playerList){
+    //for (Player oply : playerList){
       //if (Math.sqrt(Math.pow((ply.GetLocation[0] - oply.GetLocation[0]), 2))+Math.pow((ply.GetLocation[1] - oply.GetLocation[1]), 2)){
       //TODO euclidean distance to player
       //}
-    }
+    //}
     //make icon instead TODO
     //Update saying on map and give info to clients
     String form = String.format("%s says: %s", ply.GetNickName(), text);

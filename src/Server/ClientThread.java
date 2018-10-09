@@ -1,16 +1,21 @@
 package Server;
 
 import java.util.Random;
+import java.io.*;
 import Client.Player;
 
 public class ClientThread{
   
 	private String threadName;
 	private Player player;
+  private DataInputStream client_in;
+  private DataOutputStream client_out;
 
-	public ClientThread(String name, Player player){
+	public ClientThread(String name, Player player, DataInputStream c_in, DataOutputStream c_out){
 		this.threadName = name;
 		this.player = player;
+    this.client_in = c_in;
+    this.client_out = c_out;
 	}
 
 	void CommandHandler(String cmd){
@@ -89,4 +94,8 @@ public class ClientThread{
 	    
 		return result;
 	}
+
+  public void SetLocation(int[] pos){
+    //TODO set position of player
+  }
 }
