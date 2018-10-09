@@ -11,11 +11,9 @@ public class ClientThread{
   private DataInputStream client_in;
   private DataOutputStream client_out;
 
-	public ClientThread(String name, Player player, DataInputStream c_in, DataOutputStream c_out){
+	public ClientThread(String name, Player player){
 		this.threadName = name;
 		this.player = player;
-    this.client_in = c_in;
-    this.client_out = c_out;
 	}
 
 	void CommandHandler(String cmd){
