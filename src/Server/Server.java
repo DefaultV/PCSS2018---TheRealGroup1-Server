@@ -69,6 +69,10 @@ class HandleAClient implements Runnable {
 				inputLine = in.readUTF();
 				out.writeUTF("This thingy here is printing stuff: " + inputLine);
 				
+				
+				
+				
+				
 			}
 			/*
 			
@@ -103,14 +107,17 @@ class HandleAClient implements Runnable {
 	// System.out.println("Please Write /Create Server + Your_ServerName");
 
 
-	void CreateLobby() {
-		
+	void CreateLobby(String lobbyName) {
+		//Lobby lobby = new Lobby(lobbyName);
 	}
 
-	void SetLobby(Player player) {
-
+	void SetLobby(Player player, String lobbyName) {
+		//player = getName();
+		//player.currentLobby = lobbyName;
 	}
 
-	void ExitLobby() {
+	void ExitLobby(Player player, String lobbyName) {
+		//player = this.getName();
+		//player.currentLobby = null;
 	}
 }
