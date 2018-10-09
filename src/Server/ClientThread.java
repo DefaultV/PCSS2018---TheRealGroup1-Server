@@ -1,16 +1,51 @@
 package Server;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 import java.util.Random;
-import Client.Player;
 
-public class ClientThread{
-  
+public class ClientThread extends Thread{
+	
+	private String lastInput;
 	private String threadName;
-	private Player player;
+	private Socket socket;
+	private DataInputStream input;
+	private DataOutputStream output;
 
-	public ClientThread(String name, Player player){
+	public ClientThread(String name, Socket socket){
 		this.threadName = name;
-		this.player = player;
+		this.socket = socket;
+	}
+	
+	public void run(){
+		try {
+			input = new DataInputStream(socket.getInputStream());
+			output = new DataOutputStream(socket.getOutputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		while(true) {
+			try {
+				lastInput = input.readUTF();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			CommandHandler(lastInput);
+			
+			if (lastInput.contains("/quit") || lastInput.contains("/q")) {
+				break;
+			}
+		}
+		
+		try {
+			socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	void CommandHandler(String cmd){
@@ -22,25 +57,23 @@ public class ClientThread{
 		cmdWord = cmd.split(" ", 2);
 	  
 		switch (cmdWord[0]) {
-			case "approach" : 
-				//TODO update player pos
-				break;
-			case "whisper" 	:
-				//TODO create whisper convo
-				break;
-			case "roll" 	:
+			case "/roll" 	:
 				diceTotal = multiPartRoll(cmd);
 				//TODO send dice total to broadcast
 				break;
-			case "stand" 	:
+			case "/approach": 
+				//TODO update player pos
 				break;
-			case "setname" 	:
+			case "/whisper" :
+				//TODO create whisper convo
+				break;
+			case "/setname" :
 				//TODO change player name
 				break;
-			case "join" 	:
+			case "/join" 	:
 				//TODO set player to lobby and add to lobby
 				break;
-			case "leave" 	:
+			case "/leave" 	:
 				//TODO remove player from lobby
 				break;
 		}
@@ -73,12 +106,12 @@ public class ClientThread{
 		if (die == -1)
 			return Integer.parseInt(roll);
 		
-		if (Character.isDigit(roll.substring(die -1, die).charAt(0))) {
+		if (Character.isDigit(roll.substring(die - 1, die).charAt(0))) {
 			diceAmount = Integer.parseInt(roll.substring(die - 1, die));
 		} else { 
 			diceAmount = 1;
 		}
-		int diceSize = Integer.parseInt(roll.substring(die + 1, die +2));
+		int diceSize = Integer.parseInt(roll.substring(die + 1, die + 2));
 	    
 		for (int i=0; i<diceAmount; i++) {
 			result += rand.nextInt(diceSize) + 1;
