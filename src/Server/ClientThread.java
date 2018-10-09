@@ -5,19 +5,20 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Random;
-import java.io.*;
 
 public class ClientThread extends Thread{
 	
 	private String lastInput;
 	private String threadName;
 	private Socket socket;
+	private Server serv;
 	private DataInputStream input;
 	private DataOutputStream output;
 
-	public ClientThread(String name, Socket socket){
+	public ClientThread(String name, Socket socket, Server serv){
 		this.threadName = name;
 		this.socket = socket;
+		this.serv = serv;
 	}
 	
 	public void run(){
@@ -101,6 +102,7 @@ public class ClientThread extends Thread{
 		Random rand = new Random();
 		int result = 0;
 		int diceAmount;
+		int diceSize;
 
 		int die = roll.indexOf('d');
 	    
@@ -112,7 +114,14 @@ public class ClientThread extends Thread{
 		} else { 
 			diceAmount = 1;
 		}
-		int diceSize = Integer.parseInt(roll.substring(die + 1, die + 2));
+		
+		if (roll.substring(die + 1).length() >= 3 && Character.isDigit(roll.substring(die + 1).charAt(2))) {
+			diceSize = Integer.parseInt(roll.substring(die + 1, die + 4));
+		} else if (roll.substring(die + 1).length() == 2 && Character.isDigit(roll.substring(die + 1).charAt(1))) {
+			diceSize = Integer.parseInt(roll.substring(die + 1, die + 3));
+		} else {
+			diceSize = Integer.parseInt(roll.substring(die + 1, die + 2));
+		}
 	    
 		for (int i=0; i<diceAmount; i++) {
 			result += rand.nextInt(diceSize) + 1;
@@ -124,7 +133,7 @@ public class ClientThread extends Thread{
 		return result;
 	}
 
-  public void SetLocation(int[] pos){
-    //TODO set position of player
-  }
+	public void SetLocation(int[] pos){
+		//TODO set position of player
+	}
 }

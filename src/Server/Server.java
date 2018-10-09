@@ -10,7 +10,7 @@ public class Server {
   DataInputStream iStream;
   DataOutputStream oStream;
   List<Player> client_ids;
-  List<Lobby> lobby_names;
+  List<Lobby> lobby_list;
   static int numberOfClient = 0;
 
   public static void main(String[] args) throws IOException {
