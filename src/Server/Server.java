@@ -10,12 +10,13 @@ public class Server {
 	DataInputStream iStream;
 	DataOutputStream oStream;
 	List<Player> client_ids;
+	List<Lobby> lobby_names;
 	static int numberOfClient = 0;
 
 	public static void main(String[] args) throws IOException {
 		// Specifying the serverSocket port number
 		int port = 1916;
-
+		//172.30.213.186
 		String clientSentence;
 		String serverMessage;
 		new Thread(() -> {
@@ -23,9 +24,10 @@ public class Server {
 				ServerSocket ourServerSocket = new ServerSocket(port);
 
 				System.out.println("DnDServer started at " + new Date() + '\n');
-
+				System.out.println(InetAddress.getLocalHost());
 				while (true) {
 					Socket clientSocket = ourServerSocket.accept();
+					System.out.println("A new Player just joined the Server!");
 					numberOfClient++;
 
 					InetAddress inetAddress = clientSocket.getInetAddress();
@@ -59,7 +61,17 @@ class HandleAClient implements Runnable {
 		try {
 			DataInputStream in = new DataInputStream(clientSocket.getInputStream());
 			DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
-
+			
+			String inputLine, outputLine;
+			
+			while(in != null)
+			{
+				inputLine = in.readUTF();
+				out.writeUTF("This thingy here is printing stuff: " + inputLine);
+				
+			}
+			/*
+			
 			while (true) {
 				System.out.println("Please Enter your username");
 				clientSentence = in.readUTF();
@@ -75,8 +87,11 @@ class HandleAClient implements Runnable {
 				} else {
 					out.writeUTF("Fine then...");
 				}
+				
+				
 
 			}
+			*/
 
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -87,11 +102,9 @@ class HandleAClient implements Runnable {
 
 	// System.out.println("Please Write /Create Server + Your_ServerName");
 
-	void ClientHandler() {
-	}
 
 	void CreateLobby() {
-
+		
 	}
 
 	void SetLobby(Player player) {
