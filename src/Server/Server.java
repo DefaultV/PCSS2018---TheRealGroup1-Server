@@ -41,17 +41,21 @@ public class Server {
 	      } catch (IOException ex) {
 	        System.err.println(ex);
 	      }
+	      
+	      
 	  }
 
-  public void CreateLobby(ClientThread client, String name) {
-    int rnd_id = (int)Math.ceil(Math.random() * 100);
-    Lobby lob = new Lobby(Integer.toString(rnd_id), name, this);
-    lob.AddPlayerToList(client);
-  }
+	  public void CreateLobby(ClientThread client, String name) {
+		    int rnd_id = (int)Math.ceil(Math.random() * 100);
+		    Lobby lob = new Lobby(Integer.toString(rnd_id), name, this);
+		    lob.AddPlayerToList(client);
+		    //client.setLobby(lob);
+		  }
 
-  public void SetLobby(ClientThread client, String lobbyname) {
-    GetLobbyByName(lobbyname).AddPlayerToList(client);
-  }
+		  public void SetLobby(ClientThread client, String lobbyname) {
+		    GetLobbyByName(lobbyname).AddPlayerToList(client);
+		   // client.setLobby(GetLobbyByName(lobbyname));
+		  }
 
   public Lobby GetLobbyByName(String lobbyname){
     for(Lobby lob : lobby_list){
@@ -66,6 +70,15 @@ public class Server {
 	  lobby_list.remove(GetLobbyByName(lobbyname));
   }
   
+  public void showInt(int thisInt)
+  {
+	  System.out.println(thisInt);
+  }
+  
+  public void showString(String thisString)
+  {
+	  System.out.println(thisString);
+  }
   public void LeaveLobby(ClientThread client, String lobbyname)
   {
 	  GetLobbyByName(lobbyname).RemovePlayerFromList(client);
