@@ -71,7 +71,7 @@ public class Server {
 	  GetLobbyByName(lobbyname).RemovePlayerFromList(client);
   }
 }
-
+/*
 class HandleAClient implements Runnable {
 
   private Socket clientSocket;
@@ -118,7 +118,7 @@ class HandleAClient implements Runnable {
 
 
          }
-         */
+
 
     } catch (IOException ex) {
       ex.printStackTrace();
@@ -130,4 +130,4 @@ class HandleAClient implements Runnable {
   // System.out.println("Please Write /Create Server + Your_ServerName");
 
 }
-
+*/
