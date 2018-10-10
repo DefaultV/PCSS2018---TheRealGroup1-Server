@@ -45,6 +45,7 @@ public class Server {
 	      
 	  }
 
+
 	  public void CreateLobby(ClientThread client, String name) {
 		    int rnd_id = (int)Math.ceil(Math.random() * 100);
 		    Lobby lob = new Lobby(Integer.toString(rnd_id), name, this);
