@@ -5,13 +5,16 @@ import Client.Client;
 public class Lobby{
   private String id;
   private String name;
+  private Server serv;
 
   List<ClientThread> client_List;
 
-  public Lobby(String id, String name){
+  public Lobby(String id, String name, Server serv){
     this.client_List = new ArrayList<ClientThread>();
     this.id = id;
     this.name = name;
+    this.serv = serv;
+  
   }
 
   public String GetId(){
@@ -28,7 +31,7 @@ public class Lobby{
   public void RemovePlayerFromList(ClientThread client){
     this.client_List.remove(client);
     if (this.GetPlayerCount() <= 0){
-      //Call server & delete this lobby TODO
+    	serv.DeleteLobby(this.name);
     }
   }
 
