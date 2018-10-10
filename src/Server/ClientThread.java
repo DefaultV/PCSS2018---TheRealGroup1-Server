@@ -106,12 +106,22 @@ public class ClientThread extends Thread{
 
 		int die = roll.indexOf('d');
 	    
-		if (die == -1)
-			return Integer.parseInt(roll);
+		if (die == -1) {
+			try {
+				return Integer.parseInt(roll);
+			} catch (NumberFormatException e) {
+				if (roll.charAt(0) == '+')
+					return Integer.parseInt(roll.substring(2));
+				else
+					return Integer.parseInt(roll.substring(2)) * -1;
+			}
+		}
 		
-		if (Character.isDigit(roll.substring(die - 1, die).charAt(0))) {
+		if (Character.isDigit(roll.substring(die - 2, die).charAt(0))) {
+			diceAmount = Integer.parseInt(roll.substring(die - 2, die));
+		} else if (Character.isDigit(roll.substring(die - 1, die).charAt(0))) {
 			diceAmount = Integer.parseInt(roll.substring(die - 1, die));
-		} else { 
+		} else {
 			diceAmount = 1;
 		}
 		
