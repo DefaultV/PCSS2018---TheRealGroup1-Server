@@ -47,10 +47,12 @@ public class Server {
     int rnd_id = (int)Math.ceil(Math.random() * 100);
     Lobby lob = new Lobby(Integer.toString(rnd_id), name, this);
     lob.AddPlayerToList(client);
+    client.setLobby(lob);
   }
 
   public void SetLobby(ClientThread client, String lobbyname) {
     GetLobbyByName(lobbyname).AddPlayerToList(client);
+    client.setLobby(GetLobbyByName(lobbyname));
   }
 
   public Lobby GetLobbyByName(String lobbyname){

@@ -15,6 +15,7 @@ public class ClientThread extends Thread{
 	private Server serv;
 	private DataInputStream input;
 	private DataOutputStream output;
+	private Lobby lobby;
 
 	public ClientThread(String name, Socket socket, Server serv){
 		this.threadName = name;
@@ -83,6 +84,11 @@ public class ClientThread extends Thread{
 				break;
 			case "/setname" :
 				this.playerName = cmdWord[1];
+				try {
+					output.writeUTF("Your name is now " + playerName);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				break;
 			case "/join" 	:
 				if (cmdWord[1].contains(serv.GetLobbyByName(cmdWord[1]).GetLobbyName())) {
@@ -92,8 +98,10 @@ public class ClientThread extends Thread{
 				}
 				break;
 			case "/leave" 	:
-				//serv.LeaveLobby(this, cmdWord[1]);
+				serv.LeaveLobby(this, cmdWord[1]);
 				break;
+			default:
+				lobby.GetGame().Broadcast(cmd);
 		}
 	}
 
@@ -166,6 +174,18 @@ public class ClientThread extends Thread{
 	
 	public String getPlayerName() {
 		return this.playerName;
+	}
+	
+	public void setLobby(Lobby lobby) {
+		this.lobby = lobby;
+	}
+	
+	public void sendText(String text) {
+		try {
+			output.writeUTF(text);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void SetLocation(int[] pos){

@@ -42,9 +42,10 @@ public class Game {
 		return playing;
 	}
 
-  public void Broadcast(List<ClientThread> l_ply, String txt){
-    for(ClientThread ply : l_ply){
+  public void Broadcast(String txt){
+    for(ClientThread ply : playerList){
       System.out.format("%s", txt);
+      ply.sendText(txt);
       //TODO
       //Send text to player
       //ply.SendText(txt)
@@ -77,12 +78,12 @@ public class Game {
       default:
         break;
     }
-    Broadcast(playerList, form);
-    for (ClientThread client : playerList){
+    //Broadcast(playerList, form);
+    //for (ClientThread client : playerList){
     //Update action on map and give info to clients
     //TODO
     //client.UpdateClient_SendAction(Player ply, Action act);
-    }
+    //}
   }
 
   public void SetSaying(Player ply, String text){
@@ -95,6 +96,6 @@ public class Game {
     //}
     //make icon instead TODO
     //Update saying on map and give info to clients
-    Broadcast(playerList, form);
+    //Broadcast(playerList, form);
   }
 }
