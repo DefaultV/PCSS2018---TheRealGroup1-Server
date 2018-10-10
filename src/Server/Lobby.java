@@ -11,7 +11,7 @@ public class Lobby{
   List<ClientThread> client_List;
 
   public Lobby(String id, String name, Server serv){
-    System.out.format("New lobby spawned ...");
+    System.out.format("New lobby spawned: ");
     this.client_List = new ArrayList<ClientThread>();
     this.id = id;
     this.name = name;

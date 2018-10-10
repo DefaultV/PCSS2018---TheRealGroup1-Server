@@ -89,10 +89,15 @@ public class ClientThread extends Thread{
 				this.playerName = cmdWord[1];
 				break;
 			case "/join" 	:
-				if (cmdWord[1].contains(serv.GetLobbyByName(cmdWord[1]).GetLobbyName())) {
+				try {
+				if (cmdWord[1].contains(serv.GetLobbyByName(cmdWord[1]).GetLobbyName()))  {
 					serv.SetLobby(this, cmdWord[1]);
-				} else {
+				} 
+					
+				} catch (NullPointerException NE)
+				{
 					serv.CreateLobby(this, cmdWord[1]);
+
 				}
 				break;
 			case "/leave" 	:
