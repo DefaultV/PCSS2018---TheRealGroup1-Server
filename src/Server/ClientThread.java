@@ -50,17 +50,15 @@ public class ClientThread extends Thread{
 			}
 		}
 		
-		finally {
-			try {
-				System.out.println("Input is closing");
-				input.close();
-				System.out.println("Output is closing");
-				output.close();
-				System.out.println("Socket is closing");
-				socket.close();
-			} catch (IOException e) {
-				System.out.println("Exception encountered while closing I/O and Socket");
-			}
+		try {
+			System.out.println("Input is closing");
+			input.close();
+			System.out.println("Output is closing");
+			output.close();
+			System.out.println("Socket is closing");
+			socket.close();
+		} catch (IOException e) {
+			System.out.println("Exception encountered while closing I/O and Socket");
 		}
 	}
 
