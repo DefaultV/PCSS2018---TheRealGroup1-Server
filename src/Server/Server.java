@@ -66,6 +66,11 @@ public class Server {
   {
 	  lobby_list.remove(GetLobbyByName(lobbyname));
   }
+  
+  public void LeaveLobby(ClientThread client, String lobbyname)
+  {
+	  GetLobbyByName(lobbyname).RemovePlayerFromList(client);
+  }
 }
 
 class HandleAClient implements Runnable {
