@@ -10,7 +10,7 @@ public class Server {
   DataInputStream iStream;
   DataOutputStream oStream;
   List<Player> client_ids;
-  List<Lobby> lobby_names;
+  static List<Lobby> lobby_list;
   static int numberOfClient = 0;
 
   public static void main(String[] args) throws IOException {
@@ -36,7 +36,7 @@ public class Server {
           System.out.println(
               "Client " + numberOfClient + "'s IP Address is " + inetAddress.getHostAddress() + "\n");
 
-          new Thread(new HandleAClient(clientSocket)).start();
+          new Thread(new ClientThread("ChickenSalad", clientSocket)).start();
         }
       } catch (IOException ex) {
         System.err.println(ex);
@@ -46,7 +46,7 @@ public class Server {
 
   public void CreateLobby(ClientThread client, String name) {
     int rnd_id = (int)Math.ceil(Math.random() * 100);
-    Lobby lob = new Lobby(Integer.toString(rnd_id), name);
+    Lobby lob = new Lobby(Integer.toString(rnd_id), name, this);
     lob.AddPlayerToList(client);
   }
 
@@ -60,6 +60,16 @@ public class Server {
         return lob;
     }
     return null;
+  }
+  
+  public void DeleteLobby(String lobbyname)
+  {
+	  lobby_list.remove(GetLobbyByName(lobbyname));
+  }
+  
+  public void LeaveLobby(ClientThread client, String lobbyname)
+  {
+	  GetLobbyByName(lobbyname).RemovePlayerFromList(client);
   }
 }
 
@@ -82,12 +92,7 @@ class HandleAClient implements Runnable {
 
       String inputLine, outputLine;
 
-      while(in != null)
-      {
-        inputLine = in.readUTF();
-        out.writeUTF("This thingy here is printing stuff: " + inputLine);
-
-      }
+      ClientThread clientthreado = new ClientThread("chicken", this.clientSocket);
       /*
 
          while (true) {
@@ -121,4 +126,3 @@ class HandleAClient implements Runnable {
   // System.out.println("Please Write /Create Server + Your_ServerName");
 
 }
-
