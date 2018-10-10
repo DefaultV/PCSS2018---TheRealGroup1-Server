@@ -37,7 +37,7 @@ public class Lobby{
   }
 
   public void InitGame(){
-    Game game = new Game();
+    Game game = new Game(client_List);
     while(game.isPlaying()){
       //Play the game TODO
     }

@@ -22,7 +22,11 @@ public class Game {
 	
 	List<ClientThread> playerList;
 	boolean playing;
-	
+  
+  Game(List<ClientThread> client_list){
+    this.playerList = client_list;
+  }
+
 	public String GetRules() {
 		return "Something";
 	}
@@ -43,8 +47,13 @@ public class Game {
       System.out.format("%s", txt);
       //TODO
       //Send text to player
-      //Server.sendtext(txt)
+      //ply.UpdateClient_SendText(txt)
     }
+  }
+
+  public void BroadcastTo(ClientThread client, String txt){
+    //TODO
+    //client.UpdateClient_SendText(txt);
   }
 
   public void SetPosition(ClientThread ply, int[] pos){
@@ -69,20 +78,23 @@ public class Game {
         break;
     }
     Broadcast(playerList, form);
+    for (ClientThread client : playerList){
     //Update action on map and give info to clients
     //TODO
+    //client.UpdateClient_SendAction(Player ply, Action act);
+    }
   }
 
   public void SetSaying(Player ply, String text){
+    String form = String.format("%s says: %s", ply.GetNickName(), text);
     //if range between p1 and p2 <= 5
-    //for (Player oply : playerList){
-      //if (Math.sqrt(Math.pow((ply.GetLocation[0] - oply.GetLocation[0]), 2))+Math.pow((ply.GetLocation[1] - oply.GetLocation[1]), 2)){
-      //TODO euclidean distance to player
+    //for (ClientThread client : playerList){
+      //if (Math.sqrt(Math.pow((ply.GetLocation[0] - oply.GetLocation[0]), 2))+Math.pow((ply.GetLocation[1] - oply.GetLocation[1]), 2) >= 2.0f){
+      //BroadcastTo(client, form);
       //}
     //}
     //make icon instead TODO
     //Update saying on map and give info to clients
-    String form = String.format("%s says: %s", ply.GetNickName(), text);
     Broadcast(playerList, form);
   }
 }
