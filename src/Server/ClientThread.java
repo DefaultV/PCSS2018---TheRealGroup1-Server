@@ -33,7 +33,6 @@ public class ClientThread extends Thread{
 		
 		try {
 			this.playerName = input.readUTF();
-			serv.showString(playerName);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -76,7 +75,7 @@ public class ClientThread extends Thread{
 		switch (cmdWord[0]) {
 			case "/roll" 	:
 				diceTotal = multiPartRoll(cmd);
-				serv.showInt(diceTotal);
+				lobby.GetGame().Broadcast("Total rolled is : " + diceTotal);
 				//TODO send dice total to broadcast
 				break;
 			case "/approach": 
@@ -90,14 +89,11 @@ public class ClientThread extends Thread{
 				break;
 			case "/join" 	:
 				try {
-				if (cmdWord[1].contains(serv.GetLobbyByName(cmdWord[1]).GetLobbyName()))  {
-					serv.SetLobby(this, cmdWord[1]);
-				} 
-					
-				} catch (NullPointerException NE)
-				{
+					if (cmdWord[1].contains(serv.GetLobbyByName(cmdWord[1]).GetLobbyName()))  {
+						serv.SetLobby(this, cmdWord[1]);
+					}
+				} catch (NullPointerException NE) {
 					serv.CreateLobby(this, cmdWord[1]);
-
 				}
 				break;
 			case "/leave" 	:
