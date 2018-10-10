@@ -91,7 +91,12 @@ class HandleAClient implements Runnable {
 
       String inputLine, outputLine;
 
-      ClientThread clientthreado = new ClientThread("chicken", this.clientSocket);
+      while(in != null)
+      {
+        inputLine = in.readUTF();
+        out.writeUTF("This thingy here is printing stuff: " + inputLine);
+
+      }
       /*
 
          while (true) {
@@ -125,3 +130,4 @@ class HandleAClient implements Runnable {
   // System.out.println("Please Write /Create Server + Your_ServerName");
 
 }
+

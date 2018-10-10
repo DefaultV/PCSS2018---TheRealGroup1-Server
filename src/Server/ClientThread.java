@@ -5,25 +5,33 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Random;
-import java.io.*;
 
 public class ClientThread extends Thread{
 	
 	private String lastInput;
 	private String threadName;
+	private String playerName;
 	private Socket socket;
+	private Server serv;
 	private DataInputStream input;
 	private DataOutputStream output;
 
-	public ClientThread(String name, Socket socket){
+	public ClientThread(String name, Socket socket, Server serv){
 		this.threadName = name;
 		this.socket = socket;
+		this.serv = serv;
 	}
 	
 	public void run(){
 		try {
 			input = new DataInputStream(socket.getInputStream());
 			output = new DataOutputStream(socket.getOutputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			this.playerName = input.readUTF();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -43,9 +51,14 @@ public class ClientThread extends Thread{
 		}
 		
 		try {
+			System.out.println("Input is closing");
+			input.close();
+			System.out.println("Output is closing");
+			output.close();
+			System.out.println("Socket is closing");
 			socket.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("Exception encountered while closing I/O and Socket");
 		}
 	}
 
@@ -69,13 +82,17 @@ public class ClientThread extends Thread{
 				//TODO create whisper convo
 				break;
 			case "/setname" :
-				//TODO change player name
+				this.playerName = cmdWord[1];
 				break;
 			case "/join" 	:
-				//TODO set player to lobby and add to lobby
+				if (cmdWord[1].contains(serv.GetLobbyByName(cmdWord[1]).GetLobbyName())) {
+					serv.SetLobby(this, cmdWord[1]);
+				} else {
+					serv.CreateLobby(this, cmdWord[1]);
+				}
 				break;
 			case "/leave" 	:
-				//TODO remove player from lobby
+				//serv.LeaveLobby(this, cmdWord[1]);
 				break;
 		}
 	}
@@ -101,30 +118,57 @@ public class ClientThread extends Thread{
 		Random rand = new Random();
 		int result = 0;
 		int diceAmount;
+		int diceSize;
 
 		int die = roll.indexOf('d');
 	    
-		if (die == -1)
-			return Integer.parseInt(roll);
+		if (die == -1) {
+			try {
+				return Integer.parseInt(roll);
+			} catch (NumberFormatException e) {
+				if (roll.charAt(0) == '+')
+					return Integer.parseInt(roll.substring(2));
+				else
+					return Integer.parseInt(roll.substring(2)) * -1;
+			}
+		}
 		
-		if (Character.isDigit(roll.substring(die - 1, die).charAt(0))) {
+		if (Character.isDigit(roll.substring(die - 2, die).charAt(0))) {
+			diceAmount = Integer.parseInt(roll.substring(die - 2, die));
+		} else if (Character.isDigit(roll.substring(die - 1, die).charAt(0))) {
 			diceAmount = Integer.parseInt(roll.substring(die - 1, die));
-		} else { 
+		} else {
 			diceAmount = 1;
 		}
-		int diceSize = Integer.parseInt(roll.substring(die + 1, die + 2));
+		
+		if (roll.substring(die + 1).length() >= 3 && Character.isDigit(roll.substring(die + 1).charAt(2))) {
+			diceSize = Integer.parseInt(roll.substring(die + 1, die + 4));
+		} else if (roll.substring(die + 1).length() == 2 && Character.isDigit(roll.substring(die + 1).charAt(1))) {
+			diceSize = Integer.parseInt(roll.substring(die + 1, die + 3));
+		} else {
+			diceSize = Integer.parseInt(roll.substring(die + 1, die + 2));
+		}
 	    
 		for (int i=0; i<diceAmount; i++) {
 			result += rand.nextInt(diceSize) + 1;
 		}
 	    
-		if (roll.startsWith("-"))
+		if (roll.startsWith("-")) {
 			result = -result;
+		}
 	    
 		return result;
 	}
+	
+	public String getThreadName() {
+		return this.threadName;
+	}
+	
+	public String getPlayerName() {
+		return this.playerName;
+	}
 
-  public void SetLocation(int[] pos){
-    //TODO set position of player
-  }
+	public void SetLocation(int[] pos){
+		//TODO set position of player
+	}
 }
