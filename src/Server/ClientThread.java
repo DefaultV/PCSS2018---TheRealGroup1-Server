@@ -15,6 +15,7 @@ public class ClientThread extends Thread{
 	private Server serv;
 	private DataInputStream input;
 	private DataOutputStream output;
+	private Lobby lobby;
 
 	public ClientThread(String name, Socket socket, Server serv){
 		this.threadName = name;
@@ -32,6 +33,8 @@ public class ClientThread extends Thread{
 		
 		try {
 			this.playerName = input.readUTF();
+			serv.showString(playerName);
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -73,6 +76,7 @@ public class ClientThread extends Thread{
 		switch (cmdWord[0]) {
 			case "/roll" 	:
 				diceTotal = multiPartRoll(cmd);
+				serv.showInt(diceTotal);
 				//TODO send dice total to broadcast
 				break;
 			case "/approach": 
@@ -85,15 +89,22 @@ public class ClientThread extends Thread{
 				this.playerName = cmdWord[1];
 				break;
 			case "/join" 	:
-				if (cmdWord[1].contains(serv.GetLobbyByName(cmdWord[1]).GetLobbyName())) {
+				try {
+				if (cmdWord[1].contains(serv.GetLobbyByName(cmdWord[1]).GetLobbyName()))  {
 					serv.SetLobby(this, cmdWord[1]);
-				} else {
+				} 
+					
+				} catch (NullPointerException NE)
+				{
 					serv.CreateLobby(this, cmdWord[1]);
+
 				}
 				break;
 			case "/leave" 	:
-				//serv.LeaveLobby(this, cmdWord[1]);
+				serv.LeaveLobby(this, cmdWord[1]);
 				break;
+			default:
+				lobby.GetGame().Broadcast(cmd);
 		}
 	}
 
@@ -166,6 +177,18 @@ public class ClientThread extends Thread{
 	
 	public String getPlayerName() {
 		return this.playerName;
+	}
+	
+	public void setLobby(Lobby lobby) {
+		this.lobby = lobby;
+	}
+	
+	public void sendText(String text) {
+		try {
+			output.writeUTF(text);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void SetLocation(int[] pos){
