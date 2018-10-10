@@ -85,6 +85,8 @@ public class Server {
 	public void showInt(int thisInt) {
 		System.out.println(thisInt);
 	}
+	
+	
 
 	public void showString(String thisString) {
 		System.out.println(thisString);
