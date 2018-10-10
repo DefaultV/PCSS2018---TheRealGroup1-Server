@@ -7,42 +7,41 @@ import Client.Player;
 
 public class Server {
 
-  DataInputStream iStream;
-  DataOutputStream oStream;
-  List<Player> client_ids;
-  static List<Lobby> lobby_list;
-  static int numberOfClient = 0;
+	  DataInputStream iStream;
+	  DataOutputStream oStream;
+	  List<Player> client_ids;
+	  List<Lobby> lobby_list;
+	  int numberOfClient = 0;
 
-  public static void main(String[] args) throws IOException {
-    // Specifying the serverSocket port number
-    int port = 1916;
-    //172.30.213.186
-    String clientSentence;
-    String serverMessage;
-    new Thread(() -> {
-      try {
-        ServerSocket ourServerSocket = new ServerSocket(port);
+	  public static void main(String[] args) throws IOException {
+	    // Specifying the serverSocket port number
+	    int port = 1916;
+	    //172.30.213.186
+	    String clientSentence;
+	    String serverMessage;
+	    Server serv = new Server();
+	    
+	      try {
+	        ServerSocket ourServerSocket = new ServerSocket(port);
 
-        System.out.println("DnDServer started at " + new Date() + '\n');
-        System.out.println(InetAddress.getLocalHost());
-        while (true) {
-          Socket clientSocket = ourServerSocket.accept();
-          System.out.println("A new Player just joined the Server!");
-          numberOfClient++;
+	        System.out.println("DnDServer started at " + new Date() + '\n');
+	        System.out.println(InetAddress.getLocalHost());
+	        while (true) {
+	          Socket clientSocket = ourServerSocket.accept();
+	          System.out.println("A new Player just joined the Server!");
+	          serv.numberOfClient++;
 
-          InetAddress inetAddress = clientSocket.getInetAddress();
-          System.out
-            .println("Client" + numberOfClient + "'s host name is " + inetAddress.getHostName() + "\n");
-          System.out.println(
-              "Client " + numberOfClient + "'s IP Address is " + inetAddress.getHostAddress() + "\n");
+	          InetAddress inetAddress = clientSocket.getInetAddress();
+	          System.out.println("Client" + serv.numberOfClient + "'s host name is " + inetAddress.getHostName() + "\n");
+	          System.out.println("Client " + serv.numberOfClient + "'s IP Address is " + inetAddress.getHostAddress() + "\n");
 
-          new Thread(new ClientThread("ChickenSalad", clientSocket)).start();
-        }
-      } catch (IOException ex) {
-        System.err.println(ex);
-      }
-    }).start();
-  }
+	          //new Thread(new ClientThread("ChickenSalad", clientSocket)).start();
+	          new ClientThread("derp", clientSocket,serv).start();
+	        }
+	      } catch (IOException ex) {
+	        System.err.println(ex);
+	      }
+	  }
 
   public void CreateLobby(ClientThread client, String name) {
     int rnd_id = (int)Math.ceil(Math.random() * 100);
@@ -72,7 +71,7 @@ public class Server {
 	  GetLobbyByName(lobbyname).RemovePlayerFromList(client);
   }
 }
-
+/*
 class HandleAClient implements Runnable {
 
   private Socket clientSocket;
@@ -92,7 +91,12 @@ class HandleAClient implements Runnable {
 
       String inputLine, outputLine;
 
-      ClientThread clientthreado = new ClientThread("chicken", this.clientSocket);
+      while(in != null)
+      {
+        inputLine = in.readUTF();
+        out.writeUTF("This thingy here is printing stuff: " + inputLine);
+
+      }
       /*
 
          while (true) {
@@ -114,7 +118,7 @@ class HandleAClient implements Runnable {
 
 
          }
-         */
+
 
     } catch (IOException ex) {
       ex.printStackTrace();
@@ -126,3 +130,4 @@ class HandleAClient implements Runnable {
   // System.out.println("Please Write /Create Server + Your_ServerName");
 
 }
+*/
