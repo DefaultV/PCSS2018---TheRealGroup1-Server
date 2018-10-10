@@ -10,6 +10,7 @@ public class ClientThread extends Thread{
 	
 	private String lastInput;
 	private String threadName;
+	private String playerName;
 	private Socket socket;
 	private Server serv;
 	private DataInputStream input;
@@ -29,6 +30,12 @@ public class ClientThread extends Thread{
 			e.printStackTrace();
 		}
 		
+		try {
+			this.playerName = input.readUTF();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		while(true) {
 			try {
 				lastInput = input.readUTF();
@@ -43,10 +50,17 @@ public class ClientThread extends Thread{
 			}
 		}
 		
-		try {
-			socket.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+		finally {
+			try {
+				System.out.println("Input is closing");
+				input.close();
+				System.out.println("Output is closing");
+				output.close();
+				System.out.println("Socket is closing");
+				socket.close();
+			} catch (IOException e) {
+				System.out.println("Exception encountered while closing I/O and Socket");
+			}
 		}
 	}
 
@@ -70,13 +84,17 @@ public class ClientThread extends Thread{
 				//TODO create whisper convo
 				break;
 			case "/setname" :
-				//TODO change player name
+				this.playerName = cmdWord[1];
 				break;
 			case "/join" 	:
-				//TODO set player to lobby and add to lobby
+				if (cmdWord[1].contains(serv.GetLobbyByName(cmdWord[1]).GetLobbyName())) {
+					serv.SetLobby(this, cmdWord[1]);
+				} else {
+					serv.CreateLobby(this, cmdWord[1]);
+				}
 				break;
 			case "/leave" 	:
-				//TODO remove player from lobby
+				//serv.LeaveLobby(this, cmdWord[1]);
 				break;
 		}
 	}
@@ -137,10 +155,19 @@ public class ClientThread extends Thread{
 			result += rand.nextInt(diceSize) + 1;
 		}
 	    
-		if (roll.startsWith("-"))
+		if (roll.startsWith("-")) {
 			result = -result;
+		}
 	    
 		return result;
+	}
+	
+	public String getThreadName() {
+		return this.threadName;
+	}
+	
+	public String getPlayerName() {
+		return this.playerName;
 	}
 
 	public void SetLocation(int[] pos){
