@@ -47,7 +47,7 @@ public class Game {
       System.out.format("%s", txt);
       //TODO
       //Send text to player
-      //ply.UpdateClient_SendText(txt)
+      //ply.SendText(txt)
     }
   }
 
