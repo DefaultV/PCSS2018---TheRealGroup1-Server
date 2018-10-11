@@ -52,8 +52,6 @@ public class Lobby{
   public void InitGame(){
     System.out.format("New game initiated ...");
     Game game = new Game(client_List);
-    while(game.isPlaying()){
-      //Play the game TODO
-    }
+    SetGame(game);
   }
 }

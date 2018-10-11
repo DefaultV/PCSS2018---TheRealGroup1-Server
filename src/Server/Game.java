@@ -46,9 +46,6 @@ public class Game {
     for(ClientThread ply : playerList){
       System.out.format("%s", txt);
       ply.sendText(txt);
-      //TODO
-      //Send text to player
-      //ply.SendText(txt)
     }
   }
 
