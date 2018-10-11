@@ -25,6 +25,7 @@ public class ClientThread extends Thread{
 	}
 	
 	public void run(){
+		
 		try {
 			input = new DataInputStream(socket.getInputStream());
 			output = new DataOutputStream(socket.getOutputStream());
@@ -66,8 +67,10 @@ public class ClientThread extends Thread{
 	}
 
 	void CommandHandler(String cmd){
-	  
+		
+		String originalMsg = cmd;
 		String[] cmdWord = new String[2];
+		String[] ogMsgSplit = new String[3];
 		int diceTotal;
 	  
 		cmd = cmd.toLowerCase();
@@ -85,13 +88,12 @@ public class ClientThread extends Thread{
 				break;
 			case "/whisper" :
 			case "/w"		:
-				String[] whisper = new String[2];
-				whisper = cmdWord[1].split(" ", 2);
-				this.sendText(">> " + cmdWord[1]);
-				serv.GetClientByName(whisper[0]).sendText(this.playerName + " >> " + whisper[1]);
+				ogMsgSplit = originalMsg.split(" ", 3);
+				this.sendText(">> " + ogMsgSplit[1] + " " + ogMsgSplit[2]);
+				serv.GetClientByName(ogMsgSplit[1]).sendText(this.playerName + " >> " + ogMsgSplit[2]);
 				break;
 			case "/setname" :
-				this.playerName = cmdWord[1];
+				this.playerName = ogMsgSplit[1];
 				this.threadName = this.playerName;
 				break;
 			case "/join" 	:
@@ -110,8 +112,15 @@ public class ClientThread extends Thread{
 				playerPos = cmdWord[1];
 				lobby.GetGame().Broadcast("poschange"+this.threadName + " " + playerPos);
 				break;
+			case "startgame" :
+				lobby.InitGame();
+				break;
 			default:
-				lobby.GetGame().Broadcast(cmd);
+				try {
+					lobby.GetGame().Broadcast(originalMsg);
+				} catch (NullPointerException e) {
+					this.sendText("The game has not begun yet");
+				}
 		}
 	}
 
@@ -124,7 +133,7 @@ public class ClientThread extends Thread{
 		for (int i=0; i<parts.length; i++) {
 			total += singleRoll(parts[i]);
 		}
-	    
+		
 		return total;
 	}
   
@@ -187,14 +196,11 @@ public class ClientThread extends Thread{
 	}
 	
 	public void sendText(String text) {
+		
 		try {
 			output.writeUTF(text);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public void SetLocation(int[] pos){
-		//TODO set position of player
 	}
 }
