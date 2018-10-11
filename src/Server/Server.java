@@ -20,10 +20,10 @@ public class Server {
 		String clientSentence;
 		String serverMessage;
 		Server serv = new Server();
+		ServerSocket ourServerSocket = new ServerSocket(port);
+
 		serv.lobby_list = new ArrayList<Lobby>();
 		try {
-			ServerSocket ourServerSocket = new ServerSocket(port);
-
 			System.out.println("DnDServer started at " + new Date() + '\n');
 			System.out.println(InetAddress.getLocalHost());
 			while (true) {
@@ -42,6 +42,8 @@ public class Server {
 			}
 		} catch (IOException ex) {
 			System.err.println(ex);
+		} finally {
+			ourServerSocket.close();
 		}
 
 	}
@@ -80,16 +82,6 @@ public class Server {
 
 	public void DeleteLobby(String lobbyname) {
 		lobby_list.remove(GetLobbyByName(lobbyname));
-	}
-
-	public void showInt(int thisInt) {
-		System.out.println(thisInt);
-	}
-	
-	
-
-	public void showString(String thisString) {
-		System.out.println(thisString);
 	}
 
 	public void LeaveLobby(ClientThread client, String lobbyname) {
