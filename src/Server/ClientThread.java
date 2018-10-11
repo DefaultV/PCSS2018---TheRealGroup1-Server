@@ -126,6 +126,9 @@ public class ClientThread extends Thread {
 			this.sendText("									and m is equal to the number of sides of the dice. n can be ommited or below 99, and 0 < m < 999");
 			this.sendText("/Setname desiredName				Changes your nickname to the desiredName");
 			this.sendText("/Whisper nameOfPlayer message 	Sends a message privately to a player with the nickname nameOfPlayer");
+			this.sendText("Thank you for using P3's server miniproject");
+			this.sendText("We wish you a nice day!");
+			this.sendText("Andreas, Daniel, Gabriel, Jannick, Magnus, Young");
 			break;
 		case "changepos":
 			playerPos = cmdWord[1];
