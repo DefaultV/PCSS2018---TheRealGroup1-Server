@@ -11,6 +11,7 @@ public class ClientThread extends Thread{
 	private String lastInput;
 	private String threadName;
 	private String playerName;
+	private String playerPos;
 	private Socket socket;
 	private Server serv;
 	private DataInputStream input;
@@ -33,8 +34,7 @@ public class ClientThread extends Thread{
 		
 		try {
 			this.playerName = input.readUTF();
-			serv.showString(playerName);
-
+			this.threadName = playerName;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -46,11 +46,11 @@ public class ClientThread extends Thread{
 				e.printStackTrace();
 			}
 			
-			CommandHandler(lastInput);
-			
 			if (lastInput.contains("/quit") || lastInput.contains("/q")) {
 				break;
 			}
+			
+			CommandHandler(lastInput);
 		}
 		
 		try {
@@ -67,7 +67,7 @@ public class ClientThread extends Thread{
 
 	void CommandHandler(String cmd){
 	  
-		String[] cmdWord;
+		String[] cmdWord = new String[2];
 		int diceTotal;
 	  
 		cmd = cmd.toLowerCase();
@@ -75,43 +75,46 @@ public class ClientThread extends Thread{
 	  
 		switch (cmdWord[0]) {
 			case "/roll" 	:
-				diceTotal = multiPartRoll(cmd);
-				serv.showInt(diceTotal);
-				//TODO send dice total to broadcast
-				break;
-			case "/approach": 
-				//TODO update player pos
+			case "/r"		:
+				try {
+					diceTotal = multiPartRoll(cmd);
+					lobby.GetGame().Broadcast("Total rolled is : " + diceTotal);
+				} catch (NumberFormatException e) {
+					this.sendText("The roll input could not be understood please try again");
+				}
 				break;
 			case "/whisper" :
-				//TODO create whisper convo
+			case "/w"		:
+				String[] whisper = new String[2];
+				whisper = cmdWord[1].split(" ", 2);
+				this.sendText(">> " + cmdWord[1]);
+				serv.GetClientByName(whisper[0]).sendText(this.playerName + " >> " + whisper[1]);
 				break;
 			case "/setname" :
 				this.playerName = cmdWord[1];
+				this.threadName = this.playerName;
 				break;
 			case "/join" 	:
 				try {
-				if (cmdWord[1].contains(serv.GetLobbyByName(cmdWord[1]).GetLobbyName()))  {
-					serv.SetLobby(this, cmdWord[1]);
-				} 
-					
-				} catch (NullPointerException NE)
-				{
+					if (cmdWord[1].contains(serv.GetLobbyByName(cmdWord[1]).GetLobbyName()))  {
+						serv.SetLobby(this, cmdWord[1]);
+					}
+				} catch (NullPointerException NE) {
 					serv.CreateLobby(this, cmdWord[1]);
-
 				}
 				break;
 			case "/leave" 	:
 				serv.LeaveLobby(this, cmdWord[1]);
+				break;
+			case "changepos":
+				playerPos = cmdWord[1];
+				lobby.GetGame().Broadcast("poschange"+this.threadName + " " + playerPos);
 				break;
 			default:
 				lobby.GetGame().Broadcast(cmd);
 		}
 	}
 
-	void Heartbeat(){
-
-	}
-  
 	private int multiPartRoll(String roll) {
 	    
 		String[] parts = roll.split("(?=[+-])");
