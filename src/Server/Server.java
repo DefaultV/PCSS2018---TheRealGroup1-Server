@@ -52,14 +52,14 @@ public class Server {
 		this.lobby_list.add(lob);
 		lob.AddPlayerToList(client);
 		System.out.println(name + " has been created as a new lobby");
-		// client.setLobby(lob);
+		client.setLobby(lob);
 	}
 
 	public void SetLobby(ClientThread client, String lobbyname) {
 		GetLobbyByName(lobbyname).AddPlayerToList(client);
 		System.out.println(client + "has joined: " + lobbyname);
 
-		// client.setLobby(GetLobbyByName(lobbyname));
+		client.setLobby(GetLobbyByName(lobbyname));
 	}
 
 	public Lobby GetLobbyByName(String lobbyname) {

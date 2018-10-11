@@ -57,12 +57,6 @@ public class Game {
     //client.UpdateClient_SendText(txt);
   }
 
-  public void SetPosition(ClientThread ply, int[] pos){
-    this.playerList.get(playerList.indexOf(ply)).SetLocation(pos);
-    //Update position on map and give info to clients
-    //TODO
-  }
-
   public void SetAction(Player ply, Action act){
     String form = "";
     switch(act){
