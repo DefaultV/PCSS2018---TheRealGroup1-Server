@@ -49,11 +49,6 @@ public class Game {
     }
   }
 
-  public void BroadcastTo(ClientThread client, String txt){
-    //TODO
-    //client.UpdateClient_SendText(txt);
-  }
-
   public void SetAction(Player ply, Action act){
     String form = "";
     switch(act){

@@ -14,9 +14,7 @@ public class Server {
 
 	public static void main(String[] args) throws IOException {
 
-		// Specifying the serverSocket port number
-		int port = 1916;
-		// 172.30.213.186
+		int port = String.parseInt(args[0]);
 		String clientSentence;
 		String serverMessage;
 		Server serv = new Server();
@@ -37,7 +35,6 @@ public class Server {
 				System.out.println(
 						"Client " + serv.numberOfClient + "'s IP Address is " + inetAddress.getHostAddress() + "\n");
 
-				// new Thread(new ClientThread("ChickenSalad", clientSocket)).start();
 				new ClientThread("derp", clientSocket, serv).start();
 			}
 		} catch (IOException ex) {

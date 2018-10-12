@@ -131,8 +131,12 @@ public class ClientThread extends Thread {
 			this.sendText("Andreas, Daniel, Gabriel, Jannick, Magnus, Young");
 			break;
 		case "changepos":
-			playerPos = cmdWord[1];
-			lobby.GetGame().Broadcast("poschange" + this.threadName + " " + playerPos);
+      try{
+			  playerPos = cmdWord[1];
+			  lobby.GetGame().Broadcast("poschange" + this.threadName + " " + playerPos);
+      } catch (NullPointerException e){
+        this.sendText("The game has not begun yet");
+      }
 			break;
 		case "startgame":
 			lobby.InitGame();
