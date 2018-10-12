@@ -43,8 +43,18 @@ public class ClientThread extends Thread {
 		while (true) {
 			try {
 				lastInput = input.readUTF();
-			} catch (IOException e) {
-				e.printStackTrace();
+			} catch (Exception e) {
+				try {
+					System.out.println("Input is closing");
+					input.close();
+					System.out.println("Output is closing");
+					output.close();
+					System.out.println("Socket is closing");
+					socket.close();
+					return;
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 
 			if (lastInput.contains("/quit") || lastInput.contains("/q")) {
@@ -61,6 +71,7 @@ public class ClientThread extends Thread {
 			output.close();
 			System.out.println("Socket is closing");
 			socket.close();
+			return;
 		} catch (IOException e) {
 			System.out.println("Exception encountered while closing I/O and Socket");
 		}
@@ -81,7 +92,7 @@ public class ClientThread extends Thread {
 		case "/r":
 			try {
 				diceTotal = multiPartRoll(cmd);
-				lobby.GetGame().Broadcast("Total rolled is : " + diceTotal);
+				lobby.GetGame().Broadcast(this.playerName + " rolled is : " + diceTotal);
 			} catch (NumberFormatException e) {
 				this.sendText("The roll input could not be understood please try again");
 			} catch (NullPointerException ne) {
@@ -231,8 +242,18 @@ public class ClientThread extends Thread {
 
 		try {
 			output.writeUTF(text);
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			try {
+				System.out.println("Input is closing");
+				input.close();
+				System.out.println("Output is closing");
+				output.close();
+				System.out.println("Socket is closing");
+				socket.close();
+				Thread.currentThread().interrupt();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 }

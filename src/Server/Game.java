@@ -42,7 +42,7 @@ public class Game {
 		return playing;
 	}
 
-  public void Broadcast(String txt){
+  public synchronized void Broadcast(String txt){
     for(ClientThread ply : playerList){
       System.out.format("%s", txt);
       ply.sendText(txt);
