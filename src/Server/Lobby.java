@@ -49,6 +49,14 @@ public class Lobby{
   public int GetPlayerCount(){
     return this.client_List.size();
   }
+  
+  public ClientThread GetClientByName(String clientName) {
+		for (ClientThread cliento : client_List) {
+			if (cliento.getThreadName().equals(clientName))
+				return cliento;
+		}
+		return null;
+	}
 
   public void InitGame(){
     //Inits a new Game object and sets the private game variable to it.
