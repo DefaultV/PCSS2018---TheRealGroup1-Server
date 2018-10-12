@@ -98,6 +98,7 @@ public class ClientThread extends Thread {
 			this.playerName = ogMsgSplit[1];
 			this.threadName = this.playerName;
 			break;
+		case "/create":
 		case "/join":
 			if (lobby == null) {
 				try {
@@ -139,7 +140,12 @@ public class ClientThread extends Thread {
       }
 			break;
 		case "startgame":
+			try {
 			lobby.InitGame();
+			} catch (NullPointerException ne)
+			{
+				this.sendText("You are not in a lobby");
+			}
 			break;
 		default:
 			try {

@@ -58,7 +58,7 @@ public class Server {
 		GetLobbyByName(lobbyname).AddPlayerToList(client);
 		System.out.println(client + "has joined: " + lobbyname);
 
-		client.setLobby(GetLobbyByName(lobbyname));
+		//client.setLobby(GetLobbyByName(lobbyname));
 	}
 
 	public Lobby GetLobbyByName(String lobbyname) {
