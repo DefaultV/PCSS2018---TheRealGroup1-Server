@@ -36,6 +36,7 @@ public class ClientThread extends Thread {
 		try {
 			this.playerName = input.readUTF();
 			this.threadName = playerName;
+      this.sendText("Hello, " + this.playerName + "!")
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -111,6 +112,7 @@ public class ClientThread extends Thread {
 				} catch (NullPointerException NE) {
 					serv.CreateLobby(this, cmdWord[1]);
 					lobby = serv.GetLobbyByName(cmdWord[1]);
+          this.sendText("You joined, " + lobby.GetLobbyName());
 				}
 			}
 			break;
