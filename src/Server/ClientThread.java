@@ -104,7 +104,7 @@ public class ClientThread extends Thread {
 		case "/whisper":
 		case "/w":
 			this.sendText(">> " + ogMsgSplit[1] + " " + ogMsgSplit[2]);
-			serv.GetClientByName(ogMsgSplit[1]).sendText(this.playerName + " >> " + ogMsgSplit[2]);
+			lobby.GetClientByName(ogMsgSplit[1]).sendText(this.playerName + " >> " + ogMsgSplit[2]);
 			break;
 		case "/setname":
 			this.playerName = ogMsgSplit[1];
@@ -143,9 +143,11 @@ public class ClientThread extends Thread {
 			this.sendText("									and m is equal to the number of sides of the dice. n can be ommited or below 99, and 0 < m < 999");
 			this.sendText("/Setname desiredName				Changes your nickname to the desiredName");
 			this.sendText("/Whisper nameOfPlayer message 	Sends a message privately to a player with the nickname nameOfPlayer");
+			this.sendText("/avatar number 1-6 				Changes avatar");
 			this.sendText("Thank you for using P3's server miniproject");
 			this.sendText("We wish you a nice day!");
 			this.sendText("Andreas, Daniel, Gabriel, Jannick, Magnus, Young");
+			;
 			break;
 		case "changepos":
       try{
