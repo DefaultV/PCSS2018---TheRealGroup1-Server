@@ -14,9 +14,7 @@ public class Server {
 
 	public static void main(String[] args) throws IOException {
 
-		// Specifying the serverSocket port number
-		int port = 1916;
-		// 172.30.213.186
+		int port = Integer.parseInt(args[0]);
 		String clientSentence;
 		String serverMessage;
 		Server serv = new Server();
@@ -36,8 +34,7 @@ public class Server {
 						"Client" + serv.numberOfClient + "'s host name is " + inetAddress.getHostName() + "\n");
 				System.out.println(
 						"Client " + serv.numberOfClient + "'s IP Address is " + inetAddress.getHostAddress() + "\n");
-
-				// new Thread(new ClientThread("ChickenSalad", clientSocket)).start();
+        //Spawn a new ClientThread to handle each client
 				new ClientThread("derp", clientSocket, serv).start();
 			}
 		} catch (IOException ex) {
@@ -47,7 +44,7 @@ public class Server {
 		}
 
 	}
-
+  //Creates a new lobby and assigns the player to the clientlist inside that lobby, also assigns a random ID as a string
 	public void CreateLobby(ClientThread client, String name) {
 		int rnd_id = (int) Math.ceil(Math.random() * 100);
 		Lobby lob = new Lobby(Integer.toString(rnd_id), name, this);
@@ -61,7 +58,7 @@ public class Server {
 		GetLobbyByName(lobbyname).AddPlayerToList(client);
 		System.out.println(client + "has joined: " + lobbyname);
 
-		client.setLobby(GetLobbyByName(lobbyname));
+		//client.setLobby(GetLobbyByName(lobbyname));
 	}
 
 	public Lobby GetLobbyByName(String lobbyname) {

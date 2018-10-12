@@ -36,6 +36,7 @@ public class ClientThread extends Thread {
 		try {
 			this.playerName = input.readUTF();
 			this.threadName = playerName;
+      this.sendText("Hello, " + this.playerName + "!");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -43,8 +44,18 @@ public class ClientThread extends Thread {
 		while (true) {
 			try {
 				lastInput = input.readUTF();
-			} catch (IOException e) {
-				e.printStackTrace();
+			} catch (Exception e) {
+				try {
+					System.out.println("Input is closing");
+					input.close();
+					System.out.println("Output is closing");
+					output.close();
+					System.out.println("Socket is closing");
+					socket.close();
+					return;
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 
 			if (lastInput.contains("/quit") || lastInput.contains("/q")) {
@@ -61,6 +72,7 @@ public class ClientThread extends Thread {
 			output.close();
 			System.out.println("Socket is closing");
 			socket.close();
+			return;
 		} catch (IOException e) {
 			System.out.println("Exception encountered while closing I/O and Socket");
 		}
@@ -81,7 +93,7 @@ public class ClientThread extends Thread {
 		case "/r":
 			try {
 				diceTotal = multiPartRoll(cmd);
-				lobby.GetGame().Broadcast("Total rolled is : " + diceTotal);
+				lobby.GetGame().Broadcast(this.playerName + " rolled is : " + diceTotal);
 			} catch (NumberFormatException e) {
 				this.sendText("The roll input could not be understood please try again");
 			} catch (NullPointerException ne) {
@@ -97,7 +109,9 @@ public class ClientThread extends Thread {
 		case "/setname":
 			this.playerName = ogMsgSplit[1];
 			this.threadName = this.playerName;
+      this.sendText("You changed name to: " + this.playerName);
 			break;
+		case "/create":
 		case "/join":
 			if (lobby == null) {
 				try {
@@ -105,15 +119,18 @@ public class ClientThread extends Thread {
 					if (cmdWord[1].contains(serv.GetLobbyByName(cmdWord[1]).GetLobbyName())) {
 						serv.SetLobby(this, cmdWord[1]);
 						lobby = serv.GetLobbyByName(cmdWord[1]);
+            this.sendText("You joined, " + this.playerName);
 					}
 				} catch (NullPointerException NE) {
 					serv.CreateLobby(this, cmdWord[1]);
 					lobby = serv.GetLobbyByName(cmdWord[1]);
+          this.sendText("You joined, " + lobby.GetLobbyName());
 				}
 			}
 			break;
 		case "/leave":
 			serv.LeaveLobby(this, lobby.GetLobbyName());
+      this.sendText("You left the lobby");
 			lobby = null;
 			break;
 		case "/help":
@@ -131,11 +148,22 @@ public class ClientThread extends Thread {
 			this.sendText("Andreas, Daniel, Gabriel, Jannick, Magnus, Young");
 			break;
 		case "changepos":
-			playerPos = cmdWord[1];
-			lobby.GetGame().Broadcast("poschange" + this.threadName + " " + playerPos);
+      try{
+			  playerPos = cmdWord[1];
+			  lobby.GetGame().Broadcast("poschange" + this.threadName + " " + playerPos);
+      } catch (NullPointerException e){
+        this.sendText("The game has not begun yet");
+      }
 			break;
 		case "startgame":
+			try {
 			lobby.InitGame();
+			} catch (NullPointerException ne)
+			{
+				this.sendText("You are not in a lobby");
+			}
+      lobby.GetGame().Broadcast("Game has started!");
+
 			break;
 		default:
 			try {
@@ -221,8 +249,18 @@ public class ClientThread extends Thread {
 
 		try {
 			output.writeUTF(text);
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			try {
+				System.out.println("Input is closing");
+				input.close();
+				System.out.println("Output is closing");
+				output.close();
+				System.out.println("Socket is closing");
+				socket.close();
+				Thread.currentThread().interrupt();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 }
