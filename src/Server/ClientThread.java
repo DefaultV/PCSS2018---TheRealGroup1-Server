@@ -87,6 +87,7 @@ public class ClientThread extends Thread {
 
 		cmd = cmd.toLowerCase();
 		cmdWord = cmd.split(" ", 2);
+		ogMsgSplit = originalMsg.split(" ", 3);
 
 		switch (cmdWord[0]) {
 		case "/roll":
@@ -102,7 +103,6 @@ public class ClientThread extends Thread {
 			break;
 		case "/whisper":
 		case "/w":
-			ogMsgSplit = originalMsg.split(" ", 3);
 			this.sendText(">> " + ogMsgSplit[1] + " " + ogMsgSplit[2]);
 			serv.GetClientByName(ogMsgSplit[1]).sendText(this.playerName + " >> " + ogMsgSplit[2]);
 			break;
@@ -167,7 +167,7 @@ public class ClientThread extends Thread {
 			break;
 		default:
 			try {
-				lobby.GetGame().Broadcast(originalMsg);
+				lobby.GetGame().Broadcast(this.playerName + " says: "+ originalMsg);
 			} catch (NullPointerException e) {
 				this.sendText("The game has not begun yet");
 			}
