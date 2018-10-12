@@ -34,7 +34,7 @@ public class Server {
 						"Client" + serv.numberOfClient + "'s host name is " + inetAddress.getHostName() + "\n");
 				System.out.println(
 						"Client " + serv.numberOfClient + "'s IP Address is " + inetAddress.getHostAddress() + "\n");
-
+        //Spawn a new ClientThread to handle each client
 				new ClientThread("derp", clientSocket, serv).start();
 			}
 		} catch (IOException ex) {
@@ -44,7 +44,7 @@ public class Server {
 		}
 
 	}
-
+  //Creates a new lobby and assigns the player to the clientlist inside that lobby, also assigns a random ID as a string
 	public void CreateLobby(ClientThread client, String name) {
 		int rnd_id = (int) Math.ceil(Math.random() * 100);
 		Lobby lob = new Lobby(Integer.toString(rnd_id), name, this);

@@ -36,6 +36,7 @@ public class ClientThread extends Thread {
 		try {
 			this.playerName = input.readUTF();
 			this.threadName = playerName;
+      this.sendText("Hello, " + this.playerName + "!");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -108,6 +109,7 @@ public class ClientThread extends Thread {
 		case "/setname":
 			this.playerName = ogMsgSplit[1];
 			this.threadName = this.playerName;
+      this.sendText("You changed name to: " + this.playerName);
 			break;
 		case "/create":
 		case "/join":
@@ -117,15 +119,18 @@ public class ClientThread extends Thread {
 					if (cmdWord[1].contains(serv.GetLobbyByName(cmdWord[1]).GetLobbyName())) {
 						serv.SetLobby(this, cmdWord[1]);
 						lobby = serv.GetLobbyByName(cmdWord[1]);
+            this.sendText("You joined, " + this.playerName);
 					}
 				} catch (NullPointerException NE) {
 					serv.CreateLobby(this, cmdWord[1]);
 					lobby = serv.GetLobbyByName(cmdWord[1]);
+          this.sendText("You joined, " + lobby.GetLobbyName());
 				}
 			}
 			break;
 		case "/leave":
 			serv.LeaveLobby(this, lobby.GetLobbyName());
+      this.sendText("You left the lobby");
 			lobby = null;
 			break;
 		case "/help":
@@ -157,6 +162,8 @@ public class ClientThread extends Thread {
 			{
 				this.sendText("You are not in a lobby");
 			}
+      lobby.GetGame().Broadcast("Game has started!");
+
 			break;
 		default:
 			try {

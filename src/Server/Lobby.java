@@ -39,6 +39,7 @@ public class Lobby{
     this.client_List.add(client);
   }
   public void RemovePlayerFromList(ClientThread client){
+    //Removes the player from the client_list and deletes the Lobby object of there's less or equal to 0 players in the list.
     this.client_List.remove(client);
     if (this.GetPlayerCount() <= 0){
     	serv.DeleteLobby(this.name);
@@ -50,6 +51,7 @@ public class Lobby{
   }
 
   public void InitGame(){
+    //Inits a new Game object and sets the private game variable to it.
     System.out.format("New game initiated ...");
     Game game = new Game(client_List);
     SetGame(game);
