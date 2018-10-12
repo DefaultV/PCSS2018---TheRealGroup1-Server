@@ -97,6 +97,7 @@ public class ClientThread extends Thread {
 		case "/setname":
 			this.playerName = ogMsgSplit[1];
 			this.threadName = this.playerName;
+      this.sendText("You changed name to: " + this.playerName);
 			break;
 		case "/join":
 			if (lobby == null) {
@@ -105,6 +106,7 @@ public class ClientThread extends Thread {
 					if (cmdWord[1].contains(serv.GetLobbyByName(cmdWord[1]).GetLobbyName())) {
 						serv.SetLobby(this, cmdWord[1]);
 						lobby = serv.GetLobbyByName(cmdWord[1]);
+            this.sendText("You joined, " + this.playerName);
 					}
 				} catch (NullPointerException NE) {
 					serv.CreateLobby(this, cmdWord[1]);
@@ -114,6 +116,7 @@ public class ClientThread extends Thread {
 			break;
 		case "/leave":
 			serv.LeaveLobby(this, lobby.GetLobbyName());
+      this.sendText("You left the lobby");
 			lobby = null;
 			break;
 		case "/help":
@@ -140,6 +143,7 @@ public class ClientThread extends Thread {
 			break;
 		case "startgame":
 			lobby.InitGame();
+      lobby.GetGame().Broadcast("Game has started!");
 			break;
 		default:
 			try {
