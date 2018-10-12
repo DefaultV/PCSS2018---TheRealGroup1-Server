@@ -143,7 +143,7 @@ public class ClientThread extends Thread {
 			break;
 		default:
 			try {
-				lobby.GetGame().Broadcast(this.name, originalMsg);
+				lobby.GetGame().Broadcast(originalMsg);
 			} catch (NullPointerException e) {
 				this.sendText("The game has not begun yet");
 			}

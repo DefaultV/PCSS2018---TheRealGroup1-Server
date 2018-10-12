@@ -14,7 +14,7 @@ public class Server {
 
 	public static void main(String[] args) throws IOException {
 
-		int port = String.parseInt(args[0]);
+		int port = Integer.parseInt(args[0]);
 		String clientSentence;
 		String serverMessage;
 		Server serv = new Server();

@@ -42,9 +42,9 @@ public class Game {
 		return playing;
 	}
 
-  public void Broadcast(String sender, String txt){
+  public void Broadcast(String txt){
     for(ClientThread ply : playerList){
-      System.out.format("%s says: %s", sender, txt);
+      System.out.format("%s", txt);
       ply.sendText(txt);
     }
   }
