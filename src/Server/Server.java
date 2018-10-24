@@ -14,16 +14,17 @@ public class Server {
 
 	public static void main(String[] args) throws IOException {
 
-		int port = Integer.parseInt(args[0]);
+		int port = Integer.parseInt(args[1]);
+		InetAddress b_addr = InetAddress.getByName(args[0]);
 		String clientSentence;
 		String serverMessage;
 		Server serv = new Server();
-		ServerSocket ourServerSocket = new ServerSocket(port);
+		ServerSocket ourServerSocket = new ServerSocket(port, 0, b_addr);
 
 		serv.lobby_list = new ArrayList<Lobby>();
 		try {
 			System.out.println("DnDServer started at " + new Date() + '\n');
-			System.out.println(InetAddress.getLocalHost());
+			System.out.println(b_addr.getHostAddress());
 			while (true) {
 				Socket clientSocket = ourServerSocket.accept();
 				System.out.println("A new Player just joined the Server!");
