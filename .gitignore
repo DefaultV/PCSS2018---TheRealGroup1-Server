@@ -15,3 +15,5 @@
 hs_err_pid*
 /src/Client/
 /bin/
+/src/MANIFEST.MF
+/src/Server.jar
