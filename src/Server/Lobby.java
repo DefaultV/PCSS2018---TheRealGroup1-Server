@@ -1,6 +1,5 @@
 package Server;
 import java.util.*;
-import Client.Client;
 
 public class Lobby{
   private String id;
